@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+    
+    
+</head>
+<body>
+    <div id="todo-container">
+        <h1>TO-DO LIST</h1>
+        <input type="text" id="task" placeholder="Enter a new task">
+        <button type="button" id="add-task">ADD</button>
+        <ul id="task-list">
+            <!-- Tasks will be added here -->
+        </ul>
+        <div id="task-count">0 Tasks pending!</div>
+    </div>
+
+    <script>
+        // JavaScript code for adding and deleting tasks
+        var taskList = document.getElementById("task-list");
+        var taskCount = document.getElementById("task-count");
+
+        function updateTaskCount() {
+            var pendingTasks = taskList.querySelectorAll("li").length;
+            taskCount.textContent = `${pendingTasks} task${pendingTasks !== 1 ? 's' : ''} pending!`;
+        }
+
+        document.getElementById("add-task").addEventListener("click", function() {
+            var taskText = document.getElementById("task").value;
+            if (taskText.trim() === "") {
+                return; // Don't add empty tasks
+            }
+
+            var listItem = document.createElement("li");
+            listItem.innerHTML = `
+                <span class="task">${taskText}</span>
+                <button class="delete-button">Delete</button>
+            `;
+
+            listItem.querySelector(".delete-button").addEventListener("click", function() {
+                taskList.removeChild(listItem);
+                updateTaskCount();
+            });
+
+            taskList.appendChild(listItem);
+            document.getElementById("task").value = "";
+            updateTaskCount();
+        });
+
+        // Initial update
+        updateTaskCount();
+    </script>
+</body>
+</html>

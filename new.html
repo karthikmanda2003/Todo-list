@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #todo-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .task {
+            flex-grow: 1;
+        }
+
+        .delete-button {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #cc0000;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button[type="button"] {
+            background-color: #008CBA;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button[type="button"]:hover {
+            background-color: #005a80;
+        }
+
+        #task-count {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="todo-container">
+        <h1>To-Do List</h1>
+        <input type="text" id="task" placeholder="Enter a new task">
+        <button type="button" id="add-task">Add</button>
+        <ul id="task-list">
+            <!-- Tasks will be added here -->
+        </ul>
+        <div id="task-count">0 tasks pending</div>
+    </div>
+
+    <script>
+        // JavaScript code for adding and deleting tasks
+        var taskList = document.getElementById("task-list");
+        var taskCount = document.getElementById("task-count");
+
+        function updateTaskCount() {
+            var pendingTasks = taskList.querySelectorAll("li").length;
+            taskCount.textContent = `${pendingTasks} task${pendingTasks !== 1 ? 's' : ''} pending`;
+        }
+
+        document.getElementById("add-task").addEventListener("click", function() {
+            var taskText = document.getElementById("task").value;
+            if (taskText.trim() === "") {
+                return; // Don't add empty tasks
+            }
+
+            var listItem = document.createElement("li");
+            listItem.innerHTML = `
+                <span class="task">${taskText}</span>
+                <button class="delete-button">Delete</button>
+            `;
+
+            listItem.querySelector(".delete-button").addEventListener("click", function() {
+                taskList.removeChild(listItem);
+                updateTaskCount();
+            });
+
+            taskList.appendChild(listItem);
+            document.getElementById("task").value = "";
+            updateTaskCount();
+        });
+
+        // Initial update
+        updateTaskCount();
+    </script>
+</body>
+</html>
